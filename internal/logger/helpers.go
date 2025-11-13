@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// StartTicker starts a periodic logger that invokes logFn at the given interval; stops on ctx.Done or returned Stop()
+// StopFunc is a function that stops a periodic logger
 type StopFunc func()
 
 // StartTicker starts a periodic logger that invokes logFn at the given interval; stops on ctx.Done or returned Stop()

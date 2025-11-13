@@ -29,7 +29,7 @@ type CLIArgs struct {
 	OwnerAddress string
 	OperatorIDs  []uint64
 	OutputPath   string
-	JSONOnly     bool
+	JSON         bool
 	Logger       *slog.Logger
 	Debug        bool
 }
@@ -74,24 +74,24 @@ func ParseCLIArgs(args []string) (*CLIArgs, error) {
 	return nil, fmt.Errorf("invalid usage")
 }
 
-func parseCommonFlags(fs *flag.FlagSet, network, nodeURL, owner *string, jsonOnly, debug *bool) {
-    fs.StringVar(network, "nw", "", "The network (mainnet, hoodi, hoodi_stage, local_testnet)")
-    fs.StringVar(network, "network", "", "The network (mainnet, hoodi, hoodi_stage, local_testnet)")
-    fs.StringVar(nodeURL, "n", "", "ETH1 (execution client) node endpoint url")
-    fs.StringVar(nodeURL, "node-url", "", "ETH1 (execution client) node endpoint url")
-    fs.StringVar(owner, "oa", "", "Cluster owner address (0x...)")
-    fs.StringVar(owner, "owner-address", "", "Cluster owner address (0x...)")
-    fs.BoolVar(jsonOnly, "json", false, "Emit JSON-only output")
-    fs.BoolVar(debug, "debug", false, "Enable debug logging")
+func parseCommonFlags(fs *flag.FlagSet, network, nodeURL, owner *string, json, debug *bool) {
+	fs.StringVar(network, "nw", "", "The network (mainnet, hoodi, hoodi_stage, local_testnet)")
+	fs.StringVar(network, "network", "", "The network (mainnet, hoodi, hoodi_stage, local_testnet)")
+	fs.StringVar(nodeURL, "n", "", "ETH1 (execution client) node endpoint url")
+	fs.StringVar(nodeURL, "node-url", "", "ETH1 (execution client) node endpoint url")
+	fs.StringVar(owner, "oa", "", "Cluster owner address (0x...)")
+	fs.StringVar(owner, "owner-address", "", "Cluster owner address (0x...)")
+	fs.BoolVar(json, "json", false, "Emit JSON-only output")
+	fs.BoolVar(debug, "debug", false, "Enable debug logging")
 }
 
 func parseClusterArgs(args []string) (*CLIArgs, error) {
 	fs := flag.NewFlagSet(string(CmdCluster), flag.ContinueOnError)
 	fs.Usage = func() { fmt.Fprintln(os.Stderr, clusterUsage()) }
 
-    var network, nodeURL, owner string
-    var jsonOnly, debug bool
-    parseCommonFlags(fs, &network, &nodeURL, &owner, &jsonOnly, &debug)
+	var network, nodeURL, owner string
+	var json, debug bool
+	parseCommonFlags(fs, &network, &nodeURL, &owner, &json, &debug)
 	var operatorIDsCSV string
 	fs.StringVar(&operatorIDsCSV, "oids", "", "Comma-separated operator IDs (3f+1)")
 	fs.StringVar(&operatorIDsCSV, "operator-ids", "", "Comma-separated operator IDs (3f+1)")
@@ -128,7 +128,7 @@ func parseClusterArgs(args []string) (*CLIArgs, error) {
 		NodeURL:      nodeURL,
 		OwnerAddress: strings.ToLower(owner),
 		OperatorIDs:  ids,
-		JSONOnly:     jsonOnly,
+		JSON:         json,
 		Debug:        debug,
 	}, nil
 }
@@ -137,9 +137,9 @@ func parseNonceArgs(args []string) (*CLIArgs, error) {
 	fs := flag.NewFlagSet(string(CmdNonce), flag.ContinueOnError)
 	fs.Usage = func() { fmt.Fprintln(os.Stderr, nonceUsage()) }
 
-    var network, nodeURL, owner string
-    var jsonOnly, debug bool
-    parseCommonFlags(fs, &network, &nodeURL, &owner, &jsonOnly, &debug)
+	var network, nodeURL, owner string
+	var json, debug bool
+	parseCommonFlags(fs, &network, &nodeURL, &owner, &json, &debug)
 
 	if err := fs.Parse(args); err != nil {
 		return nil, err
@@ -160,7 +160,7 @@ func parseNonceArgs(args []string) (*CLIArgs, error) {
 		Network:      strings.ToLower(network),
 		NodeURL:      nodeURL,
 		OwnerAddress: strings.ToLower(owner),
-		JSONOnly:     jsonOnly,
+		JSON:         json,
 		Debug:        debug,
 	}, nil
 }
@@ -169,9 +169,9 @@ func parseOperatorArgs(args []string) (*CLIArgs, error) {
 	fs := flag.NewFlagSet(string(CmdOperator), flag.ContinueOnError)
 	fs.Usage = func() { fmt.Fprintln(os.Stderr, operatorUsage()) }
 
-    var network, nodeURL, owner string
-    var jsonOnly, debug bool
-    parseCommonFlags(fs, &network, &nodeURL, &owner, &jsonOnly, &debug)
+	var network, nodeURL, owner string
+	var json, debug bool
+	parseCommonFlags(fs, &network, &nodeURL, &owner, &json, &debug)
 	var output string
 	fs.StringVar(&output, "o", "", "Output directory for operator pubkeys")
 	fs.StringVar(&output, "output-path", "", "Output directory for operator pubkeys")
@@ -196,7 +196,7 @@ func parseOperatorArgs(args []string) (*CLIArgs, error) {
 		NodeURL:      nodeURL,
 		OwnerAddress: strings.ToLower(owner),
 		OutputPath:   output,
-		JSONOnly:     jsonOnly,
+		JSON:         json,
 		Debug:        debug,
 	}, nil
 }
@@ -251,7 +251,7 @@ func printGlobalUsage() { fmt.Fprint(os.Stderr, GlobalUsage()) }
 
 // GlobalUsage returns a short usage banner for the CLI (exported for main).
 func GlobalUsage() string {
-    return `Usage: ssv-go-scanner <command> [options]
+	return `Usage: ssv-go-scanner <command> [options]
 
 Commands:
   cluster    Get latest cluster snapshot
@@ -263,7 +263,7 @@ Run '<command> -h' for command-specific options.
 }
 
 func clusterUsage() string {
-    return `Usage: ssv-go-scanner cluster -n <node-url> -nw <network> -oa <owner> -oids <id1,id2,...> [-json] [-debug]
+	return `Usage: ssv-go-scanner cluster -n <node-url> -nw <network> -oa <owner> -oids <id1,id2,...> [-json] [-debug]
 
 Options:
   -n,  --node-url         ETH1 JSON-RPC endpoint
@@ -276,7 +276,7 @@ Options:
 }
 
 func nonceUsage() string {
-    return `Usage: ssv-go-scanner nonce -n <node-url> -nw <network> -oa <owner> [-json] [-debug]
+	return `Usage: ssv-go-scanner nonce -n <node-url> -nw <network> -oa <owner> [-json] [-debug]
 
 Options:
   -n,  --node-url         ETH1 JSON-RPC endpoint
@@ -288,7 +288,7 @@ Options:
 }
 
 func operatorUsage() string {
-    return `Usage: ssv-go-scanner operator -n <node-url> -nw <network> -oa <owner> [-o <output-dir>] [-json] [-debug]
+	return `Usage: ssv-go-scanner operator -n <node-url> -nw <network> -oa <owner> [-o <output-dir>] [-json] [-debug]
 
 Options:
   -n,  --node-url         ETH1 JSON-RPC endpoint

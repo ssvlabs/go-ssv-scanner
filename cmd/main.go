@@ -12,13 +12,13 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/joho/godotenv"
-    "github.com/ssvlabs/go-ssv-scanner/config"
-    "github.com/ssvlabs/go-ssv-scanner/internal/eth"
-    "github.com/ssvlabs/go-ssv-scanner/internal/service/cluster"
-    "github.com/ssvlabs/go-ssv-scanner/internal/service/nonce"
-    "github.com/ssvlabs/go-ssv-scanner/internal/service/operator"
+	"github.com/ssvlabs/go-ssv-scanner/config"
+	"github.com/ssvlabs/go-ssv-scanner/internal/eth"
+	"github.com/ssvlabs/go-ssv-scanner/internal/service/cluster"
+	"github.com/ssvlabs/go-ssv-scanner/internal/service/nonce"
+	"github.com/ssvlabs/go-ssv-scanner/internal/service/operator"
 
-    appLogger "github.com/ssvlabs/go-ssv-scanner/internal/logger"
+	appLogger "github.com/ssvlabs/go-ssv-scanner/internal/logger"
 )
 
 func main() {
@@ -75,7 +75,7 @@ func main() {
 		if stop != nil {
 			stop()
 		}
-		if args.JSONOnly {
+		if args.JSON {
 			out := map[string]interface{}{"owner": strings.ToLower(owner.Hex()), "nonce": n}
 			enc := json.NewEncoder(os.Stdout)
 			enc.SetIndent("", "  ")
@@ -123,7 +123,7 @@ func main() {
 		})
 
 		// If JSON requested, also print structured JSON to stdout and log
-		if args.JSONOnly {
+		if args.JSON {
 			enc := json.NewEncoder(os.Stdout)
 			enc.SetIndent("", "  ")
 			_ = enc.Encode(map[string]interface{}{
@@ -146,7 +146,7 @@ func main() {
 		if stop != nil {
 			stop()
 		}
-		if args.JSONOnly {
+		if args.JSON {
 			enc := json.NewEncoder(os.Stdout)
 			enc.SetIndent("", "  ")
 			_ = enc.Encode(map[string]interface{}{"file": path, "count": count})

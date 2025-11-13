@@ -148,8 +148,7 @@ API Reference
 - `type Config`
   - `Network`: one of `mainnet`, `hoodi`, `hoodi_stage`, `local_testnet` (required)
   - `NodeURL`: ETH1 JSON-RPC endpoint URL (required)
-- `Logger`: optional `*slog.Logger` used by the scanner (no banners/progress)
- - `Logger`: optional `*slog.Logger` used by the scanner
+- `Logger`: optional `*slog.Logger` used by the scanner; progress logging is included only if `EnableProgress` is true
  - `EnableProgress`: when true and `Logger` is set, emits periodic "scan progress" logs at info level
  - `ProgressInterval`: interval for progress logs (default 2s when zero)
 

@@ -12,8 +12,8 @@ import (
 	"github.com/ethereum/go-ethereum"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
-    "github.com/ssvlabs/go-ssv-scanner/internal/eth"
-    "github.com/ssvlabs/go-ssv-scanner/internal/service"
+	"github.com/ssvlabs/go-ssv-scanner/internal/eth"
+	"github.com/ssvlabs/go-ssv-scanner/internal/service"
 )
 
 // ExportOperatorPubkeys scans OperatorAdded events and writes JSON file, returning the path.
@@ -120,7 +120,11 @@ func ExportOperatorPubkeys(ctx context.Context, client *ethclient.Client, networ
 	}
 
 	filePath := filepath.Join(outputDir, fmt.Sprintf("operator-pubkeys-%s.json", network.Name))
-	data, _ := json.MarshalIndent(entries, "", "  ")
+	data, err := json.MarshalIndent(entries, "", "  ")
+	if err != nil {
+		return "", 0, fmt.Errorf("failed to marshal operator entries: %w", err)
+	}
+
 	if err := os.WriteFile(filePath, data, 0o644); err != nil {
 		return "", 0, err
 	}
