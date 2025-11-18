@@ -128,7 +128,6 @@ cmd/bin/
 dist/
 Gopkg.lock
 Gopkg.toml
-go.sum
 *.test
 *.out
 /testdata/
