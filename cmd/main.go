@@ -45,7 +45,10 @@ func main() {
 	}
 
 	// Optionally load .env for network address overrides
-	_ = godotenv.Load()
+	err = godotenv.Load()
+	if err != nil {
+		l.Warn(".env file not found or could not be loaded, proceeding without it (default values or CLI args will be used)")
+	}
 
 	// Resolve network settings and connect
 	netCfg, err := eth.GetContractSettings(args.Network)
@@ -53,12 +56,17 @@ func main() {
 		log.Fatalf("%v", err)
 	}
 
-	client, err := eth.ConnectHTTP(args.NodeURL)
+	// Context with timeout for connection dial
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	client, err := eth.ConnectHTTP(ctx, args.NodeURL)
 	if err != nil {
 		log.Fatalf("failed to connect to node: %v", err)
 	}
 
-	ctx := context.Background()
+	ctx = context.Background()
+
 	owner := common.HexToAddress(args.OwnerAddress)
 
 	switch args.Command {

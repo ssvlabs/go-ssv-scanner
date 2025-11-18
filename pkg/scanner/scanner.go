@@ -1,18 +1,18 @@
 package scanner
 
 import (
-    "context"
-    "fmt"
+	"context"
+	"fmt"
 
-    "github.com/ethereum/go-ethereum/common"
-    "github.com/ssvlabs/go-ssv-scanner/internal/eth"
-    "github.com/ssvlabs/go-ssv-scanner/internal/service/cluster"
-    "github.com/ssvlabs/go-ssv-scanner/internal/service/nonce"
-    "github.com/ssvlabs/go-ssv-scanner/internal/service/operator"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ssvlabs/go-ssv-scanner/internal/eth"
+	"github.com/ssvlabs/go-ssv-scanner/internal/service/cluster"
+	"github.com/ssvlabs/go-ssv-scanner/internal/service/nonce"
+	"github.com/ssvlabs/go-ssv-scanner/internal/service/operator"
 )
 
 // NewScanner initializes a Scanner using the provided config.
-func NewScanner(cfg Config) (*Scanner, error) {
+func NewScanner(ctx context.Context, cfg Config) (*Scanner, error) {
 	if cfg.Network == "" {
 		return nil, fmt.Errorf("network is required")
 	}
@@ -24,7 +24,7 @@ func NewScanner(cfg Config) (*Scanner, error) {
 	if err != nil {
 		return nil, err
 	}
-	client, err := eth.ConnectHTTP(cfg.NodeURL)
+	client, err := eth.ConnectHTTP(ctx, cfg.NodeURL)
 	if err != nil {
 		return nil, fmt.Errorf("connect node: %w", err)
 	}
