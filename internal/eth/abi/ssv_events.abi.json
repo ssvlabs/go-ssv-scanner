@@ -1,0 +1,126 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "address", "name": "owner", "type": "address"},
+      {"indexed": false, "internalType": "uint64[]", "name": "operatorIds", "type": "uint64[]"},
+      {"indexed": false, "internalType": "bytes", "name": "publicKey", "type": "bytes"},
+      {"indexed": false, "internalType": "bytes", "name": "shares", "type": "bytes"},
+      {"indexed": false, "internalType": "tuple", "name": "cluster", "type": "tuple",
+        "components": [
+          {"internalType": "uint32", "name": "validatorCount", "type": "uint32"},
+          {"internalType": "uint64", "name": "networkFeeIndex", "type": "uint64"},
+          {"internalType": "uint64", "name": "index", "type": "uint64"},
+          {"internalType": "bool", "name": "active", "type": "bool"},
+          {"internalType": "uint256", "name": "balance", "type": "uint256"}
+        ]
+      }
+    ],
+    "name": "ValidatorAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "address", "name": "owner", "type": "address"},
+      {"indexed": false, "internalType": "uint64[]", "name": "operatorIds", "type": "uint64[]"},
+      {"indexed": false, "internalType": "uint256", "name": "value", "type": "uint256"},
+      {"indexed": false, "internalType": "tuple", "name": "cluster", "type": "tuple",
+        "components": [
+          {"internalType": "uint32", "name": "validatorCount", "type": "uint32"},
+          {"internalType": "uint64", "name": "networkFeeIndex", "type": "uint64"},
+          {"internalType": "uint64", "name": "index", "type": "uint64"},
+          {"internalType": "bool", "name": "active", "type": "bool"},
+          {"internalType": "uint256", "name": "balance", "type": "uint256"}
+        ]
+      }
+    ],
+    "name": "ClusterDeposited",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "address", "name": "owner", "type": "address"},
+      {"indexed": false, "internalType": "uint64[]", "name": "operatorIds", "type": "uint64[]"},
+      {"indexed": false, "internalType": "uint256", "name": "value", "type": "uint256"},
+      {"indexed": false, "internalType": "tuple", "name": "cluster", "type": "tuple",
+        "components": [
+          {"internalType": "uint32", "name": "validatorCount", "type": "uint32"},
+          {"internalType": "uint64", "name": "networkFeeIndex", "type": "uint64"},
+          {"internalType": "uint64", "name": "index", "type": "uint64"},
+          {"internalType": "bool", "name": "active", "type": "bool"},
+          {"internalType": "uint256", "name": "balance", "type": "uint256"}
+        ]
+      }
+    ],
+    "name": "ClusterWithdrawn",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "address", "name": "owner", "type": "address"},
+      {"indexed": false, "internalType": "uint64[]", "name": "operatorIds", "type": "uint64[]"},
+      {"indexed": false, "internalType": "tuple", "name": "cluster", "type": "tuple",
+        "components": [
+          {"internalType": "uint32", "name": "validatorCount", "type": "uint32"},
+          {"internalType": "uint64", "name": "networkFeeIndex", "type": "uint64"},
+          {"internalType": "uint64", "name": "index", "type": "uint64"},
+          {"internalType": "bool", "name": "active", "type": "bool"},
+          {"internalType": "uint256", "name": "balance", "type": "uint256"}
+        ]
+      }
+    ],
+    "name": "ClusterReactivated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "address", "name": "owner", "type": "address"},
+      {"indexed": false, "internalType": "uint64[]", "name": "operatorIds", "type": "uint64[]"},
+      {"indexed": false, "internalType": "tuple", "name": "cluster", "type": "tuple",
+        "components": [
+          {"internalType": "uint32", "name": "validatorCount", "type": "uint32"},
+          {"internalType": "uint64", "name": "networkFeeIndex", "type": "uint64"},
+          {"internalType": "uint64", "name": "index", "type": "uint64"},
+          {"internalType": "bool", "name": "active", "type": "bool"},
+          {"internalType": "uint256", "name": "balance", "type": "uint256"}
+        ]
+      }
+    ],
+    "name": "ValidatorRemoved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "address", "name": "owner", "type": "address"},
+      {"indexed": false, "internalType": "uint64[]", "name": "operatorIds", "type": "uint64[]"},
+      {"indexed": false, "internalType": "tuple", "name": "cluster", "type": "tuple",
+        "components": [
+          {"internalType": "uint32", "name": "validatorCount", "type": "uint32"},
+          {"internalType": "uint64", "name": "networkFeeIndex", "type": "uint64"},
+          {"internalType": "uint64", "name": "index", "type": "uint64"},
+          {"internalType": "bool", "name": "active", "type": "bool"},
+          {"internalType": "uint256", "name": "balance", "type": "uint256"}
+        ]
+      }
+    ],
+    "name": "ClusterLiquidated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "uint64", "name": "operatorId", "type": "uint64"},
+      {"indexed": true, "internalType": "address", "name": "owner", "type": "address"},
+      {"indexed": false, "internalType": "bytes", "name": "publicKey", "type": "bytes"},
+      {"indexed": false, "internalType": "uint256", "name": "fee", "type": "uint256"}
+    ],
+    "name": "OperatorAdded",
+    "type": "event"
+  }
+]
+

@@ -6,14 +6,15 @@
 .AppleDouble
 .LSOverride
 
+# Windows
+Thumbs.db
+
 # Linux
 *~
 
 # ─────────────────────────────────────────────────────────────────────────
 # 2. Version Control and Git Metadata
 # ─────────────────────────────────────────────────────────────────────────
-# If someone accidentally commits a sensitive file, it's still in history-
-# but ignoring it helps stop new copies from getting added.
 .gitattributes
 /.git/          # Don't include your .git directory as part of a submodule/context
 
@@ -24,13 +25,15 @@
 .vscode/
 .vscode/*
 
-# IntelliJ IDEA / WebStorm / PhpStorm / etc.
+# IntelliJ IDEA / WebStorm / PhpStorm / Rider
 .idea/
 *.iml
+*.sln.iml
 
 # Eclipse
 .project
 .classpath
+.cproject
 .settings/
 
 # Sublime Text
@@ -42,10 +45,6 @@
 *.swo
 *~
 
-# JetBrains Rider
-.idea/
-*.sln.iml
-
 # Miscellaneous editors
 *.kate-swp
 *.kate-swp.*
@@ -53,10 +52,9 @@
 *.komodotoolbar
 *.kdev4
 *.kdev4.*
-# ...
 
 # ─────────────────────────────────────────────────────────────────────────
-# 4. Language-Agnostic Build Artifacts
+# 4. Build Artifacts, Logs, and Temporary Files
 # ─────────────────────────────────────────────────────────────────────────
 # Logs
 npm-debug.log*
@@ -64,41 +62,30 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-
-/logs
 *.log
 *.log.*
+/logs
 
-# Dependency directories (if you want to rebuild inside the container or CI)
+# Dependency directories
 node_modules/
 jspm_packages/
 
-# Coverage reports
+# Coverage
 coverage/
 *.lcov
 *.lcov.*
 *.clover
+*.coverprofile
+*.coverage
 
 # Temporary files
 tmp/
 temp/
 *.tmp
-*.swp
+*.temp
 *.pid
 *.seed
 *.pid.lock
-
-# Compiled Python artifacts
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Compiled JavaScript (bundles, minified, maps)
-*.min.js
-*.map
-
-
-
 
 # ─────────────────────────────────────────────────────────────────────────
 # 5. Language-Specific Temporary Files
@@ -112,7 +99,9 @@ pip-delete-this-directory.txt
 dist/
 build/
 .eggs/
-
+__pycache__/
+*.py[cod]
+*$py.class
 /.env
 .venv/
 venv/
@@ -120,67 +109,69 @@ ENV/
 env.bak/
 venv.bak/
 
-# Node.js / JavaScript
+# Node.js / JavaScript / TypeScript
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 /node_modules/
-# If you are using Yarn Plug'n'Play
 .pnp.cjs
 .pnp.loader.mjs
-
-# TypeScript
 *.tsbuildinfo
 
 # Go
 /bin/
 /vendor/
 /*.exe
-
+bin/
+cmd/bin/
+dist/
+Gopkg.lock
+Gopkg.toml
+*.test
+*.out
+/testdata/
+*_test.go
 
 # ─────────────────────────────────────────────────────────────────────────
 # 6. Configuration and Secret Files
 # ─────────────────────────────────────────────────────────────────────────
-# Environment variables
 .env
-.env.*.local
 .env.local
+.env.*.local
 
 # ─────────────────────────────────────────────────────────────────────────
-# 10. Miscellaneous
+# 7. Binaries and Libraries
 # ─────────────────────────────────────────────────────────────────────────
-# Backup files
-*.bak
-*.old
-*.orig
+*.exe
+*.dll
+*.so
+*.dylib
 
-# Coverage
-coverage/
-*.lcov
-
-# Database files
-*.sqlite
-*.sqlite3
-
-
-# Archives
+# ─────────────────────────────────────────────────────────────────────────
+# 8. Archives and Packages
+# ─────────────────────────────────────────────────────────────────────────
 *.zip
 *.tar.gz
 *.rar
+*.AppImage
+*.deb
+*.rpm
 
-
-# Fonts
+# ─────────────────────────────────────────────────────────────────────────
+# 9. Fonts and Assets
+# ─────────────────────────────────────────────────────────────────────────
 *.eot
 *.otf
 *.ttf
 *.woff
 *.woff2
 
-# Executable packages
-*.AppImage
-*.deb
-*.rpm
-
-# Editor temp files
+# ─────────────────────────────────────────────────────────────────────────
+# 10. Miscellaneous
+# ─────────────────────────────────────────────────────────────────────────
+*.bak
+*.old
+*.orig
 ~$*
+.codegpt
