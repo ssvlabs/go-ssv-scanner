@@ -80,6 +80,7 @@
     "inputs": [
       {"indexed": true, "internalType": "address", "name": "owner", "type": "address"},
       {"indexed": false, "internalType": "uint64[]", "name": "operatorIds", "type": "uint64[]"},
+      {"indexed": false, "internalType": "bytes", "name": "publicKey", "type": "bytes"},
       {"indexed": false, "internalType": "tuple", "name": "cluster", "type": "tuple",
         "components": [
           {"internalType": "uint32", "name": "validatorCount", "type": "uint32"},
