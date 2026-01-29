@@ -14,8 +14,8 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
-    "github.com/ssvlabs/go-ssv-scanner/internal/eth"
-    "github.com/ssvlabs/go-ssv-scanner/internal/service"
+	"github.com/ssvlabs/go-ssv-scanner/internal/eth"
+	"github.com/ssvlabs/go-ssv-scanner/internal/service"
 )
 
 // GetLatestClusterSnapshot scans backward to find the latest cluster-affecting event for owner+operatorIds
@@ -151,11 +151,21 @@ func GetLatestClusterSnapshot(ctx context.Context, client *ethclient.Client, net
 			})
 
 			latestCluster := candidates[0]
+
+			effectiveBalance := latestCluster.cluster.Balance
+			if bal, err := getClusterBalance(ctx, client, network, owner, operatorIDs, latestCluster.cluster); err == nil && bal != nil {
+				effectiveBalance = bal
+			} else if err != nil && l != nil {
+				l.Debug("getBalance failed (using raw balance)", "err", err)
+			}
+			latestCluster.cluster.EffectiveBalance = effectiveBalance
+
 			payload := map[string]string{
-				"Owner":     strings.ToLower(owner.Hex()),
-				"Operators": joinUint64(operatorIDs, ","),
-				"Block":     fmt.Sprintf("%d", latestCluster.block),
-				"Data":      fmt.Sprintf("%d,%s,%s,%t,%s", latestCluster.cluster.ValidatorCount, latestCluster.cluster.NetworkFeeIndex.String(), latestCluster.cluster.Index.String(), latestCluster.cluster.Active, latestCluster.cluster.Balance.String()),
+				"Owner":            strings.ToLower(owner.Hex()),
+				"Operators":        joinUint64(operatorIDs, ","),
+				"Block":            fmt.Sprintf("%d", latestCluster.block),
+				"Data":             fmt.Sprintf("%d,%s,%s,%t,%s", latestCluster.cluster.ValidatorCount, latestCluster.cluster.NetworkFeeIndex.String(), latestCluster.cluster.Index.String(), latestCluster.cluster.Active, latestCluster.cluster.Balance.String()),
+				"EffectiveBalance": effectiveBalance.String(),
 			}
 			res := &ClusterResult{Payload: payload, Cluster: latestCluster.cluster}
 			return res, nil
@@ -163,12 +173,13 @@ func GetLatestClusterSnapshot(ctx context.Context, client *ethclient.Client, net
 	}
 
 	// default empty
-	empty := ClusterSnapshot{ValidatorCount: 0, NetworkFeeIndex: big.NewInt(0), Index: big.NewInt(0), Active: true, Balance: big.NewInt(0)}
+	empty := ClusterSnapshot{ValidatorCount: 0, NetworkFeeIndex: big.NewInt(0), Index: big.NewInt(0), Active: true, Balance: big.NewInt(0), EffectiveBalance: big.NewInt(0)}
 	payload := map[string]string{
-		"Owner":     strings.ToLower(owner.Hex()),
-		"Operators": joinUint64(operatorIDs, ","),
-		"Block":     fmt.Sprintf("%d", latest),
-		"Data":      fmt.Sprintf("%d,%s,%s,%t,%s", empty.ValidatorCount, empty.NetworkFeeIndex.String(), empty.Index.String(), empty.Active, empty.Balance.String()),
+		"Owner":            strings.ToLower(owner.Hex()),
+		"Operators":        joinUint64(operatorIDs, ","),
+		"Block":            fmt.Sprintf("%d", latest),
+		"Data":             fmt.Sprintf("%d,%s,%s,%t,%s", empty.ValidatorCount, empty.NetworkFeeIndex.String(), empty.Index.String(), empty.Active, empty.Balance.String()),
+		"EffectiveBalance": empty.EffectiveBalance.String(),
 	}
 	return &ClusterResult{Payload: payload, Cluster: empty}, nil
 }

@@ -12,6 +12,7 @@ import (
 type NetworkSettings struct {
 	Name            string
 	ContractAddress string
+	ViewsAddress    string
 	GenesisBlock    int64
 	ABI             abi.ABI
 }
@@ -41,19 +42,24 @@ var embeddedEventsABI []byte
 // Supports: mainnet, hoodi, hoodi_stage, local_testnet.
 func GetContractSettings(network string) (*NetworkSettings, error) {
 	var addr string
+	var viewsAddr string
 	var genesis int64
 	switch strings.ToLower(network) {
 	case "mainnet":
 		addr = getenvDefault("SSV_ADDRESS_MAINNET", DEFAULT_SSV_ADDRESS_MAINNET)
+		viewsAddr = getenvDefault("SSV_VIEWS_ADDRESS_MAINNET", addr)
 		genesis = getenvInt64Default("SSV_GENESIS_MAINNET", DEFAULT_SSV_GENESIS_MAINNET)
 	case "hoodi":
 		addr = getenvDefault("SSV_ADDRESS_HOODI", DEFAULT_SSV_ADDRESS_HOODI)
+		viewsAddr = getenvDefault("SSV_VIEWS_ADDRESS_HOODI", addr)
 		genesis = getenvInt64Default("SSV_GENESIS_HOODI", DEFAULT_SSV_GENESIS_HOODI)
 	case "hoodi_stage":
 		addr = getenvDefault("SSV_ADDRESS_HOODI_STAGE", DEFAULT_SSV_ADDRESS_HOODI_STAGE)
+		viewsAddr = getenvDefault("SSV_VIEWS_ADDRESS_HOODI_STAGE", addr)
 		genesis = getenvInt64Default("SSV_GENESIS_HOODI_STAGE", DEFAULT_SSV_GENESIS_HOODI_STAGE)
 	case "local_testnet":
 		addr = getenvDefault("SSV_ADDRESS_LOCAL_TESTNET", DEFAULT_SSV_ADDRESS_LOCAL_TESTNET)
+		viewsAddr = getenvDefault("SSV_VIEWS_ADDRESS_LOCAL_TESTNET", addr)
 		genesis = getenvInt64Default("SSV_GENESIS_LOCAL_TESTNET", DEFAULT_SSV_GENESIS_LOCAL_TESTNET)
 	default:
 		return nil, fmt.Errorf("unsupported network: %s", network)
@@ -63,5 +69,11 @@ func GetContractSettings(network string) (*NetworkSettings, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse embedded ABI: %w", err)
 	}
-	return &NetworkSettings{Name: network, ContractAddress: addr, GenesisBlock: genesis, ABI: a}, nil
+	return &NetworkSettings{
+		Name:            network,
+		ContractAddress: addr,
+		ViewsAddress:    viewsAddr,
+		GenesisBlock:    genesis,
+		ABI:             a,
+	}, nil
 }
